@@ -13,7 +13,7 @@
 *
 */
 
-class Diablo3 {
+class D3 {
     private $battlenet_tag;
     private $host                = '.battle.net';
     private $media_host          = '.media.blizzard.com';

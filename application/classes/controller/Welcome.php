@@ -6,6 +6,11 @@ class Controller_Welcome extends Controller_Template {
 
 	public function action_index()
 	{
+
+		$d3 = new D3('emb3r#1997');
+
 		$this->template->page_title = 'Welcome to the Slam Dance Clan!';
+
+		$this->template->d3 = $d3; 
 	}
 }
