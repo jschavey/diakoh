@@ -2,10 +2,10 @@
 
 class Controller_Welcome extends Controller_Template {
 
-	public $template = 'site';
+	public $template = 'slam_land';
 
 	public function action_index()
 	{
-		$this->template->message = 'Hello, World!';
+		$this->template->page_title = 'Welcome to the Slam Dance Clan!';
 	}
 }
