@@ -5,6 +5,7 @@
     <body>
         <h1>Slam It!</h1>
 
+        <pre><?= $content ?></pre>
         <pre><?= $heroes ?></pre>
         <pre><?= $career ?></pre>
     </body>

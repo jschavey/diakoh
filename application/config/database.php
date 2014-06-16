@@ -20,7 +20,7 @@ return array
 			 */
 			'hostname'   => 'localhost',
 			'database'   => 'ethicsgame',
-			'username'   => 'ethics1',
+			'username'   => 'ethic',
 			'password'   => 'ethics1',
 			'persistent' => FALSE,
 		),
@@ -40,8 +40,8 @@ return array
 			 * boolean  persistent  use persistent connections?
 			 */
 			'dsn'        => 'mysql:host=localhost;dbname=ethicsgame',
-			'username'   => 'ethics1',
-			'password'   => 'ethics1',
+			'username'   => 'root',
+			'password'   => 'Ethics1',
 			'persistent' => FALSE,
 		),
 		/**

@@ -9,9 +9,14 @@ class Controller_Welcome extends Controller_Template {
 
 		$profile = new D3('emb3r#1997');
 
-		$db = Database::instance();
+		$students = ORM::factory('Student')->find_all();
 
-		echo $db->list_columns('students');
+		$this->template->content = '';
+
+		foreach($students as $student)
+		{
+			$this->template->content .= Debug::vars( $student );
+		}
 
 		$this->template->page_title = 'Welcome to the Slam Dance Clan!';
 
