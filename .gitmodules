@@ -7,3 +7,6 @@
 [submodule "modules/userguide"]
 	path = modules/userguide
 	url = https://github.com/kohana/userguide.git
+[submodule "modules/database"]
+	path = modules/database
+	url = https://github.com/kohana/database.git
