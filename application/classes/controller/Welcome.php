@@ -9,6 +9,10 @@ class Controller_Welcome extends Controller_Template {
 
 		$profile = new D3('emb3r#1997');
 
+		$db = Database::instance();
+
+		echo $db->list_columns('students');
+
 		$this->template->page_title = 'Welcome to the Slam Dance Clan!';
 
 		$CAREER_DATA = $profile->getCareer() or die('Couldn\'t fetch career<br />');
