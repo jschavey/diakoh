@@ -13,7 +13,7 @@
 *
 */
 
-class D3 {
+class D3_API {
     private $battlenet_tag;
     private $host                = '.battle.net';
     private $media_host          = '.media.blizzard.com';

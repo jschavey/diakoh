@@ -7,115 +7,75 @@ class Controller_Welcome extends Controller_Template {
 	public function action_index()
 	{
 
-		$Diablo3 = new D3('emb3r#1997');
+		$profile = new D3('emb3r#1997');
 
 		$this->template->page_title = 'Welcome to the Slam Dance Clan!';
 
-		// For Timing
-		$time  = microtime();
-		$time  = explode(' ', $time);
-		$time  = $time[1] + $time[0];
-		$start = $time;
-
-		// PHP Settings
-		set_time_limit(0);
-		error_reporting(E_ALL);
-		ini_set('memory_limit',  '256M');
-		ini_set('display_errors', true);
-
-		/***************************************************************************************/
-
-		// Instantiate The Diablo3 Object. Parameters are optional.
-		// These are some examples ranging from no parameters to all parameters.
-		//
-		// Parameter Order: (BattleTag, Server, Locale)
-		// Brakedown - BattleTag: 'XjSv#1677' or 'XjSv-1677' (string)
-		//             Server:    'us', 'eu' etc. (string)
-		//             Locale:    'en_US', 'pt_BR', 'es_MX', etc. (string)
-		//
-		// $Diablo3 = new Diablo3();
-		// $Diablo3 = new Diablo3("XjSv#1677");
-		// $Diablo3 = new Diablo3('', 'us');
-		// $Diablo3 = new Diablo3('', '', 'en_US');
-		// $Diablo3 = new Diablo3("XjSv#1677", 'us', 'en_US');
-		//
-
-		// Call Available Methods To Return Data.
-		// In this case since we did not provide a BattleTag we will get
-		// an error message: 'Function not available without a BattleTag'
-		//
-		echo "Career Data:";
-		$CAREER_DATA = $Diablo3->getCareer();
+		$CAREER_DATA = $profile->getCareer() or die('Couldn\'t fetch career<br />');
+		$HEROES = array();
 
 		// Before handling the data check to make sure the return is an array
 		// If the data is not an array then something wen't wrong.
 		//
 		if(is_array($CAREER_DATA)) {
-		    echo '<pre>';
-		    var_dump($CAREER_DATA);
-		    echo '</pre>';
-		}
+		    $this->template->career = json_encode($CAREER_DATA, JSON_PRETTY_PRINT);
+		    
+		    foreach( $CAREER_DATA['heroes'] as $hero )
+		    {
+		    	$HEROES[] = new Hero($hero['id']);
+		    }
+		    $this->template->heroes = json_encode($HEROES, JSON_PRETTY_PRINT);
 
-		// Get Hero Data By ID
-		//
-		echo "<br>Hero Data:";
-		$HERO_DATA = $Diablo3->getHero(3982160);
-		if(is_array($HERO_DATA)) {
-		    echo '<pre>';
-		    var_dump($HERO_DATA);
-		    echo '</pre>';
+/*
+		    foreach( $HEROES['items'] as $item )
+		    {
+
+		    }
+*/
 		}
 
 		// Get Item Data
 		//
-		echo "<br>Item Data:";
-		$ITEM_DATA = $Diablo3->getItem('item/COGHsoAIEgcIBBXIGEoRHYQRdRUdnWyzFB2qXu51MA04kwNAAFAKYJMD');
+#		echo "<br>Item Data:";
+		$ITEM_DATA = $profile->getItem('item/COGHsoAIEgcIBBXIGEoRHYQRdRUdnWyzFB2qXu51MA04kwNAAFAKYJMD');
 
 		// If caching is enabled you could check if the data came from cache or the API.
 		// This reflects the last call made to the API.
 		//
-		if($Diablo3->resultsFromCache()) {
-		    echo "<br>This data is returned from cache.";
+		if($profile->resultsFromCache()) {
+#		    echo "<br>This data is returned from cache.";
 		} else {
-		    echo "<br>This data is returned from the API.";
+#		    echo "<br>This data is returned from the API.";
 		}
 
 		if(is_array($ITEM_DATA)) {
-		    echo '<pre>';
-		    var_dump($ITEM_DATA);
-		    echo '</pre>';
+#		    var_dump($ITEM_DATA);
 		}
 
 		// Get Item Information Data
 		//
-		echo "<br>Item Info Data:";
-		$ITEM_INFO_DATA = $Diablo3->getItemById('Unique_Helm_006_104');
+#		echo "<br>Item Info Data:";
+		$ITEM_INFO_DATA = $profile->getItemById('Unique_Helm_006_104');
 		if(is_array($ITEM_INFO_DATA)) {
-		    echo '<pre>';
-		    var_dump($ITEM_INFO_DATA);
-		    echo '</pre>';
+#		    var_dump($ITEM_INFO_DATA);
 		}
 
 		// Get Follower Data
 		// Your options are: 'enchantress', 'templar', 'scoundrel'
 		//
-		echo "<br>Follower Data:";
-		$FOLLOWER_DATA = $Diablo3->getFollower('templar');
+#		echo "<br>Follower Data:";
+		$FOLLOWER_DATA = $profile->getFollower('templar');
 		if(is_array($FOLLOWER_DATA)) {
-		    echo '<pre>';
-		    var_dump($FOLLOWER_DATA);
-		    echo '</pre>';
+#		    var_dump($FOLLOWER_DATA);
 		}
 
 		// Get Artisan Data
 		// Your options are: 'blacksmith', 'jeweler'
 		//
-		echo "<br>Artisan Data:";
-		$ARTISAN_DATA = $Diablo3->getArtisan('blacksmith');
+#		echo "<br>Artisan Data:";
+		$ARTISAN_DATA = $profile->getArtisan('blacksmith');
 		if(is_array($ARTISAN_DATA)) {
-		    echo '<pre>';
-		    var_dump($ARTISAN_DATA);
-		    echo '</pre>';
+#		    var_dump($ARTISAN_DATA);
 		}
 
 		/***************************************************************************************/
@@ -128,10 +88,10 @@ class Controller_Welcome extends Controller_Template {
 		//             Size: 'small' or 'large'
 		// Returns the location of the image or false on failure.
 		//
-		echo "<br>Item Image: <br>";
-		$ITEM_IMAGE = $Diablo3->getItemImage('unique_chest_013_104_demonhunter_male', 'large');
+#		echo "<br>Item Image: <br>";
+		$ITEM_IMAGE = $profile->getItemImage('unique_chest_013_104_demonhunter_male', 'large');
 		if(!empty($ITEM_IMAGE)) {
-		    echo '<img src="'.$ITEM_IMAGE.'">';
+#		    echo '<img src="'.$ITEM_IMAGE.'">';
 		}
 
 		// Get Skill Image
@@ -140,10 +100,10 @@ class Controller_Welcome extends Controller_Template {
 		//             Size: '21', '42' or '64'
 		// Returns the location of the image or false on failure.
 		//
-		echo "<br>Skill Image: <br>";
-		$SKILL_IMAGE = $Diablo3->getSkillImage('barbarian_frenzy', '64');
+#		echo "<br>Skill Image: <br>";
+		$SKILL_IMAGE = $profile->getSkillImage('barbarian_frenzy', '64');
 		if(!empty($SKILL_IMAGE)) {
-		    echo '<img src="'.$SKILL_IMAGE.'">';
+#		    echo '<img src="'.$SKILL_IMAGE.'">';
 		}
 
 		// Get PaperDoll Image
@@ -152,10 +112,10 @@ class Controller_Welcome extends Controller_Template {
 		//             Gender: 'male' or 'female'
 		// Returns the location of the image or false on failure.
 		//
-		echo "<br>Paperdoll: <br>";
-		$PAPERDOLL = $Diablo3->getPaperDoll('barbarian', 'female');
+#		echo "<br>Paperdoll: <br>";
+		$PAPERDOLL = $profile->getPaperDoll('barbarian', 'female');
 		if(!empty($PAPERDOLL)) {
-		    echo '<img src="'.$PAPERDOLL.'">';
+#		    echo '<img src="'.$PAPERDOLL.'">';
 		}
 
 		// Get All Item Images for 1 Hero
@@ -164,9 +124,9 @@ class Controller_Welcome extends Controller_Template {
 		//             Size: 'small' or 'large'
 		// Returns true on success.
 		//
-		$allItemImages = $Diablo3->getAllHeroItemImages(3982160, 'small');
+		$allItemImages = $profile->getAllHeroItemImages(3982160, 'small');
 		if($allItemImages) {
-		    echo "<br>All Hero Item Images Saved";
+#		    echo "<br>All Hero Item Images Saved";
 		}
 
 		// Get All Skill Image for 1 Hero
@@ -175,9 +135,9 @@ class Controller_Welcome extends Controller_Template {
 		//             Size: 21, 42 or 64
 		// Returns true on success.
 		//
-		$allSkillImages = $Diablo3->getAllHeroSkillImages(3982160, 42);
+		$allSkillImages = $profile->getAllHeroSkillImages(3982160, 42);
 		if($allSkillImages) {
-		    echo "<br>All Hero Skill Images Saved";
+#		    echo "<br>All Hero Skill Images Saved";
 		}
 
 		// Get ToolTip Skill Data (for javascript handling)
@@ -185,10 +145,10 @@ class Controller_Welcome extends Controller_Template {
 		// Brakedown - tooltipUrl: 'skill/barbarian/frenzy', etc.
 		//             Boolean: true for jsonp, false or leave empty for json.
 		//
-		echo "<br>Skill Tooltip: <br>";
-		$SKILL_TOOLTIP = $Diablo3->getSkillToolTip('skill/barbarian/frenzy', true);
+#		echo "<br>Skill Tooltip: <br>";
+		$SKILL_TOOLTIP = $profile->getSkillToolTip('skill/barbarian/frenzy', true);
 		if(!empty($SKILL_TOOLTIP)) {
-		    echo $SKILL_TOOLTIP;
+#		    echo $SKILL_TOOLTIP;
 		}
 
 		// Get ToolTip Rune Data (for javascript handling)
@@ -196,23 +156,10 @@ class Controller_Welcome extends Controller_Template {
 		// Brakedown - tooltipUrl: 'rune/frenzy/a', etc.
 		//             Boolean: true for jsonp, false or leave empty for json.
 		//
-		echo "<br>Skill Rune Tooltip: <br>";
-		$SKILL_RUNE_TOOLTIP = $Diablo3->getSkillToolTip('rune/frenzy/a');
+#		echo "<br>Skill Rune Tooltip: <br>";
+		$SKILL_RUNE_TOOLTIP = $profile->getSkillToolTip('rune/frenzy/a');
 		if(!empty($SKILL_RUNE_TOOLTIP)) {
-		    echo $SKILL_RUNE_TOOLTIP;
-		}
-
-		/***************************************************************************************/
-
-		// For Timing
-		$time         = microtime();
-		$time         = explode(' ', $time);
-		$time         = $time[1] + $time[0];
-		$finish       = $time;
-		$total_time   = round(($finish - $start), 4);
-		$total_memory = round((memory_get_usage() / 1048576), 2); // Calculate Memory Usage Based on MB
-
-		echo "<br>Proccess finished in {$total_time} seconds<br>Memory Used: {$total_memory} MB";
- 
+#		    echo $SKILL_RUNE_TOOLTIP;
+		} 
 	}
 }

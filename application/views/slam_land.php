@@ -5,6 +5,7 @@
     <body>
         <h1>Slam It!</h1>
 
-        <pre><? print_r( $d3 ) ?></pre>
+        <pre><?= $heroes ?></pre>
+        <pre><?= $career ?></pre>
     </body>
 </html>
